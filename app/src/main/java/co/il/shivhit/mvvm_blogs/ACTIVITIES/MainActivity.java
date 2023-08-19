@@ -1,16 +1,15 @@
 package co.il.shivhit.mvvm_blogs.ACTIVITIES;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import co.il.shivhit.model.BlogPosts;
 import co.il.shivhit.mvvm_blogs.R;
 import co.il.shivhit.viewmodel.BlogsViewModel;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity
+{
 
     private BlogsViewModel blogsLiveData;
     private BlogPosts blogPosts;
@@ -43,11 +42,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setObservers(){
-        Log.d("PP", "ACT - calling 'getAll()'");
         blogsLiveData.getAll().observe(this, new Observer<BlogPosts>() {
             @Override
             public void onChanged(BlogPosts obsevableBlogPosts) {
-                Log.d("PP", "ACT - onChanged : " + obsevableBlogPosts.size());
                 if (obsevableBlogPosts != null){
                     blogPosts = obsevableBlogPosts;
                     if (blogPosts.size() > 0) {
