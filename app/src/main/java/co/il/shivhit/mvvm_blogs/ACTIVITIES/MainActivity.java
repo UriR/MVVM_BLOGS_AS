@@ -6,14 +6,16 @@ import co.il.shivhit.mvvm_blogs.R;
 import co.il.shivhit.viewmodel.BlogsViewModel;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends BaseActivity
 {
-
     private BlogsViewModel blogsLiveData;
     private BlogPosts blogPosts;
     private TextView txtKehila;
+    private Button btnBlogPost;
+    פפפ
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class MainActivity extends BaseActivity
     protected void initializeViews() {
 
         txtKehila = findViewById(R.id.txtKehila);
+
 
         setListeners();
     }
