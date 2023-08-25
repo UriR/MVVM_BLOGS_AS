@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+import androidx.lifecycle.Observer;
 import co.il.shivhit.helper.AlertUtil;
 import co.il.shivhit.helper.DateUtil;
 import co.il.shivhit.helper.inputValidators.DateRule;
@@ -32,6 +33,7 @@ import co.il.shivhit.helper.inputValidators.TextRule;
 import co.il.shivhit.helper.inputValidators.Validator;
 import co.il.shivhit.model.BlogPost;
 import co.il.shivhit.mvvm_blogs.R;
+import co.il.shivhit.viewmodel.BlogsViewModel;
 
 public class BlogPostActivity extends BaseActivity implements EntryValidation {
     private EditText etAuthor;
@@ -42,13 +44,19 @@ public class BlogPostActivity extends BaseActivity implements EntryValidation {
     private Button    btnSave;
     private Button    btnCancel;
 
+    private BlogsViewModel blogsViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blog_post);
 
+        blogsViewModel = new BlogsViewModel();
+
         initializeViews();
-        setValidation();    }
+        setValidation();
+        setObservers();
+    }
 
     @Override
     protected void initializeViews() {
@@ -126,7 +134,7 @@ public class BlogPostActivity extends BaseActivity implements EntryValidation {
                     blogPost.setContent(etContent.getText().toString());
 
                     Toast.makeText(BlogPostActivity.this, " - OK - ", Toast.LENGTH_SHORT).show();
-                    //blogViewModel.save(blogPost);
+                    blogsViewModel.save(blogPost);
 
                     setResult(RESULT_OK);
                     finish();
@@ -139,6 +147,16 @@ public class BlogPostActivity extends BaseActivity implements EntryValidation {
             public void onClick(View v) {
                 setResult(RESULT_CANCELED);
                 finish();
+            }
+        });
+    }
+
+    public void setObservers(){
+        blogsViewModel.getSuccessOperation().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean)
+                    Toast.makeText(BlogPostActivity.this, "Saved successfully !", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,37 +1,56 @@
 package co.il.shivhit.repository;
 
-import android.util.Log;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import co.il.shivhit.model.BlogPost;
 import co.il.shivhit.model.BlogPosts;
 
 public class BlogsRepository {
-    private FirebaseFirestore    db;
-    private CollectionReference  collection;
-    private MutableLiveData<BlogPosts> blogsLiveData;
+    private final FirebaseFirestore    db;
+    private final CollectionReference  collection;
+    private final MutableLiveData<BlogPosts> blogsLiveData;
     private ListenerRegistration listenerRegistration;
+
+    private TaskCompletionSource<Boolean> taskCompletion;
 
     public BlogsRepository(){
         db          = FirebaseFirestore.getInstance();
         collection  = db.collection("Blogs");
         blogsLiveData = new MutableLiveData<>();
+    }
+
+    public Task<Boolean> add (BlogPost blogPost){
+        taskCompletion = new TaskCompletionSource<>();
+        DocumentReference document = collection.document();
+        blogPost.setIdFs(document.getId());
+        document.set(blogsLiveData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        taskCompletion.setResult(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        taskCompletion.setResult(false);
+                    }
+                });
+        return taskCompletion.getTask();
     }
 
                 /*
