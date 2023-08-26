@@ -1,5 +1,7 @@
 package co.il.shivhit.repository;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -37,7 +39,10 @@ public class BlogsRepository {
         taskCompletion = new TaskCompletionSource<>();
         DocumentReference document = collection.document();
         blogPost.setIdFs(document.getId());
-        document.set(blogsLiveData)
+        document.set(blogPost)
+                .addOnSuccessListener(unused -> {taskCompletion.setResult(true);})
+                .addOnFailureListener(e -> {taskCompletion.setResult(false);});
+                /*
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -50,6 +55,7 @@ public class BlogsRepository {
                         taskCompletion.setResult(false);
                     }
                 });
+                 */
         return taskCompletion.getTask();
     }
 

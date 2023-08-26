@@ -3,6 +3,7 @@ package co.il.shivhit.mvvm_blogs.ACTIVITIES;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -130,11 +131,11 @@ public class BlogPostActivity extends BaseActivity implements EntryValidation {
                     BlogPost blogPost = new BlogPost();
                     blogPost.setAuthor(etAuthor.getText().toString());
                     blogPost.setTitle(etTitle.getText().toString());
-                    blogPost.setDate(DateUtil.stringDateToLong(etDate.getText().toString().toString()));
+                    blogPost.setDate(DateUtil.stringDateToLong(etDate.getText().toString()));
                     blogPost.setContent(etContent.getText().toString());
 
-                    Toast.makeText(BlogPostActivity.this, " - OK - ", Toast.LENGTH_SHORT).show();
-                    blogsViewModel.save(blogPost);
+                    Log.d("MM", "ACT -  " + blogPost.toString());
+                    blogsViewModel.add(blogPost);
 
                     setResult(RESULT_OK);
                     finish();

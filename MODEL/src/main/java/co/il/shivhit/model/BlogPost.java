@@ -3,6 +3,8 @@ package co.il.shivhit.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+
 public class BlogPost extends BaseEntity implements Serializable {
     private String author;
     private String title;
@@ -35,6 +37,13 @@ public class BlogPost extends BaseEntity implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return author + ", " + title + ", " + date;
+    }
+
     public long getDate() {
         return date;
     }
@@ -51,4 +60,6 @@ public class BlogPost extends BaseEntity implements Serializable {
         BlogPost blogPost = (BlogPost) o;
         return date == blogPost.date && Objects.equals(author, blogPost.author) && Objects.equals(title, blogPost.title) && Objects.equals(content, blogPost.content);
     }
+
+
 }
